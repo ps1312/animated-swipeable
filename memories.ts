@@ -28,9 +28,14 @@ const validateModel = (json: any, index: number) => {
   return { ...json, createdAt: date } as Memory
 }
 
+// descending: b - a
+const descending = (a: Memory, b: Memory) => {
+  return b.createdAt.getTime() - a.createdAt.getTime()
+}
+
 const getMemories = (): Memory[] => {
   try {
-    return data.map(validateModel)
+    return data.map(validateModel).sort(descending)
   } catch (e) {
     return []
   }

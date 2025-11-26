@@ -7,6 +7,7 @@ import memories, { Memory } from './memories'
 const MemoryListItem: ListRenderItem<Memory> = ({ item }) => (
   <View style={styles.listItem}>
     <Text style={styles.listItemTitle}>{item.emotion}</Text>
+    <Text style={styles.listItemDate}>{item.createdAt.toDateString()}</Text>
     <Text style={styles.listItemSubtitle}>{item.activity}</Text>
   </View>
 )
@@ -16,7 +17,12 @@ const App = () => {
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
-        <FlatList data={memories} renderItem={MemoryListItem} />
+
+        <FlatList
+          data={memories}
+          renderItem={MemoryListItem}
+          contentContainerStyle={{ marginHorizontal: 16 }}
+        />
       </SafeAreaView>
     </SafeAreaProvider>
   )
@@ -28,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   listItem: {
-    height: 80,
+    height: 90,
     padding: 16,
     width: '100%',
     borderWidth: 1,
@@ -39,6 +45,7 @@ const styles = StyleSheet.create({
   },
   listItemTitle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
   listItemSubtitle: { color: 'lightgray', fontSize: 16 },
+  listItemDate: { color: 'lightgray', fontSize: 14, alignSelf: 'flex-end' },
 })
 
 export default App

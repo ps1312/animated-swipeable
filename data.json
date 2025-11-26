@@ -26,5 +26,47 @@
     "emotion": "relaxed",
     "reaction": "Needed this downtime to unwind.",
     "createdAt": "2024-03-12T21:00:00.000Z"
+  },
+  {
+    "id": 5,
+    "activity": "Tried a new recipe",
+    "emotion": "excited",
+    "reaction": "It turned out better than expected! Will make it again.",
+    "createdAt": "2024-03-16T19:15:00.000Z"
+  },
+  {
+    "id": 6,
+    "activity": "Read a book in the park",
+    "emotion": "peaceful",
+    "reaction": "Perfect weather and a great story. So relaxing.",
+    "createdAt": "2024-03-11T16:30:00.000Z"
+  },
+  {
+    "id": 7,
+    "activity": "Attended a yoga class",
+    "emotion": "refreshed",
+    "reaction": "My body feels stretched and my mind is clear.",
+    "createdAt": "2024-03-17T07:00:00.000Z"
+  },
+  {
+    "id": 8,
+    "activity": "Had a video call with family",
+    "emotion": "loved",
+    "reaction": "Miss them so much but grateful for technology.",
+    "createdAt": "2024-03-10T20:45:00.000Z"
+  },
+  {
+    "id": 9,
+    "activity": "Went grocery shopping",
+    "emotion": "accomplished",
+    "reaction": "Stocked up for the week. Feeling organized!",
+    "createdAt": "2024-03-18T11:20:00.000Z"
+  },
+  {
+    "id": 10,
+    "activity": "Listened to a new podcast",
+    "emotion": "curious",
+    "reaction": "Learned something new and interesting today.",
+    "createdAt": "2024-03-09T13:10:00.000Z"
   }
 ]
