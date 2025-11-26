@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "activity": "Went for a morning run",
+    "emotion": "energized",
+    "reaction": "Felt great! Ready to tackle the day.",
+    "createdAt": "2024-03-15T08:30:00.000Z"
+  },
+  {
+    "id": 2,
+    "activity": "Had coffee with a friend",
+    "emotion": "happy",
+    "reaction": "It was so nice catching up after so long.",
+    "createdAt": "2024-03-14T14:20:00.000Z"
+  },
+  {
+    "id": 3,
+    "activity": "Finished a work project",
+    "emotion": "relieved",
+    "reaction": "Finally done! It took longer than expected but worth it.",
+    "createdAt": "2024-03-13T18:45:00.000Z"
+  },
+  {
+    "id": 4,
+    "activity": "Watched a movie alone",
+    "emotion": "relaxed",
+    "reaction": "Needed this downtime to unwind.",
+    "createdAt": "2024-03-12T21:00:00.000Z"
+  }
+]
