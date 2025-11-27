@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { useRef, useState } from 'react'
+import {
+  Animated,
+  PanResponder,
+  StyleSheet,
+  Text,
+  useAnimatedValue,
+} from 'react-native'
 
 import { Memory } from '../memories'
 
@@ -7,12 +14,44 @@ interface MemoryListItemProps {
 }
 
 const MemoryListItem = ({ item }: MemoryListItemProps) => {
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  const translateX = useAnimatedValue(0)
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        setIsAnimating(true)
+      },
+      onPanResponderMove: (_, gestureState) => {
+        translateX.setValue(gestureState.dx)
+      },
+      onPanResponderRelease: () => {
+        setIsAnimating(false)
+        Animated.spring(translateX, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start()
+      },
+    })
+  ).current
+
   return (
-    <View style={styles.listItem}>
+    <Animated.View
+      {...panResponder.panHandlers}
+      style={[
+        styles.listItem,
+        {
+          transform: [{ translateX }],
+          backgroundColor: isAnimating ? 'gray' : 'transparent',
+        },
+      ]}
+    >
       <Text style={styles.listItemTitle}>{item.emotion}</Text>
       <Text style={styles.listItemDate}>{item.createdAt.toDateString()}</Text>
       <Text style={styles.listItemSubtitle}>{item.activity}</Text>
-    </View>
+    </Animated.View>
   )
 }
 
