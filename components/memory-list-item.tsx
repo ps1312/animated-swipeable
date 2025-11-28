@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import {
   Animated,
+  Dimensions,
   PanResponder,
   StyleSheet,
   Text,
@@ -12,6 +13,9 @@ import { Memory } from '../memories'
 interface MemoryListItemProps {
   item: Memory
 }
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window')
+const SNAP_THRESHOLD = -(SCREEN_WIDTH * 0.3)
 
 const MemoryListItem = ({ item }: MemoryListItemProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
@@ -27,10 +31,11 @@ const MemoryListItem = ({ item }: MemoryListItemProps) => {
       onPanResponderMove: (_, gestureState) => {
         translateX.setValue(gestureState.dx)
       },
-      onPanResponderRelease: () => {
+      onPanResponderRelease: (_, gestureState) => {
         setIsAnimating(false)
+
         Animated.spring(translateX, {
-          toValue: 0,
+          toValue: gestureState.dx > SNAP_THRESHOLD ? 0 : SNAP_THRESHOLD,
           useNativeDriver: true,
         }).start()
       },
