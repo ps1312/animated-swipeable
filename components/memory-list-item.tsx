@@ -21,6 +21,7 @@ const MemoryListItem = ({ item }: MemoryListItemProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
 
   const translateX = useAnimatedValue(0)
+  const lastDistance = useRef(0)
 
   const panResponder = useRef(
     PanResponder.create({
@@ -29,13 +30,18 @@ const MemoryListItem = ({ item }: MemoryListItemProps) => {
         setIsAnimating(true)
       },
       onPanResponderMove: (_, gestureState) => {
-        translateX.setValue(gestureState.dx)
+        const totalDistance = gestureState.dx + lastDistance.current
+        translateX.setValue(totalDistance)
       },
       onPanResponderRelease: (_, gestureState) => {
         setIsAnimating(false)
 
+        const totalDistance = gestureState.dx + lastDistance.current
+        const endPosition = totalDistance > SNAP_THRESHOLD ? 0 : SNAP_THRESHOLD
+        lastDistance.current = endPosition
+
         Animated.spring(translateX, {
-          toValue: gestureState.dx > SNAP_THRESHOLD ? 0 : SNAP_THRESHOLD,
+          toValue: endPosition,
           useNativeDriver: true,
         }).start()
       },
