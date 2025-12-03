@@ -5,7 +5,9 @@ import {
   PanResponder,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useAnimatedValue,
+  View,
 } from 'react-native'
 
 import { Memory } from '../memories'
@@ -56,25 +58,46 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
     })
   ).current
 
+  const deleteOpacity = translateX.interpolate({
+    inputRange: [SNAP_THRESHOLD, 0],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+  })
+
   return (
-    <Animated.View
-      {...panResponder.panHandlers}
-      style={[
-        styles.listItem,
-        {
-          transform: [{ translateX }],
-          backgroundColor: isAnimating ? 'gray' : 'transparent',
-        },
-      ]}
-    >
-      <Text style={styles.listItemTitle}>{item.emotion}</Text>
-      <Text style={styles.listItemDate}>{item.createdAt.toDateString()}</Text>
-      <Text style={styles.listItemSubtitle}>{item.activity}</Text>
-    </Animated.View>
+    <View style={styles.container}>
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[
+          styles.listItem,
+          {
+            transform: [{ translateX }],
+            backgroundColor: isAnimating ? 'gray' : 'black',
+          },
+        ]}
+      >
+        <View style={{ flex: 1 }}>
+          <Text style={styles.listItemTitle}>{item.emotion}</Text>
+          <Text style={styles.listItemDate}>
+            {item.createdAt.toDateString()}
+          </Text>
+          <Text style={styles.listItemSubtitle}>{item.activity}</Text>
+        </View>
+      </Animated.View>
+
+      <Animated.View
+        style={[styles.deleteContainer, { opacity: deleteOpacity }]}
+      >
+        <TouchableOpacity>
+          <Text style={styles.listItemTitle}>Delete</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  container: { marginBottom: 8, justifyContent: 'center' },
   listItem: {
     height: 90,
     padding: 16,
@@ -82,12 +105,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#d0d0d0',
-    justifyContent: 'center',
-    marginBottom: 8,
+    zIndex: 1,
   },
   listItemTitle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
   listItemSubtitle: { color: 'lightgray', fontSize: 16 },
   listItemDate: { color: 'lightgray', fontSize: 14, alignSelf: 'flex-end' },
+  deleteContainer: {
+    justifyContent: 'center',
+    position: 'absolute',
+    right: 0,
+    backgroundColor: 'red',
+    marginRight: 16,
+  },
 })
 
 export default MemoryListItem
