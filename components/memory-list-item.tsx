@@ -45,6 +45,7 @@ const MemoryListItem = ({ item }: MemoryListItemProps) => {
           useNativeDriver: true,
         }).start()
       },
+      onPanResponderTerminationRequest: () => false,
     })
   ).current
 
