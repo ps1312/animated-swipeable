@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons'
 import { useEffect, useRef, useState } from 'react'
 import {
   Animated,
@@ -52,6 +53,7 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
         Animated.spring(translateX, {
           toValue: endPosition,
           useNativeDriver: true,
+          bounciness: 0,
         }).start()
       },
       onPanResponderTerminationRequest: () => false,
@@ -61,6 +63,12 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
   const deleteOpacity = translateX.interpolate({
     inputRange: [SNAP_THRESHOLD, 0],
     outputRange: [1, 0],
+    extrapolate: 'clamp',
+  })
+
+  const deleteScale = translateX.interpolate({
+    inputRange: [SNAP_THRESHOLD, 0],
+    outputRange: [1, 0.3],
     extrapolate: 'clamp',
   })
 
@@ -86,10 +94,13 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
       </Animated.View>
 
       <Animated.View
-        style={[styles.deleteContainer, { opacity: deleteOpacity }]}
+        style={[
+          styles.deleteContainer,
+          { opacity: deleteOpacity, transform: [{ scale: deleteScale }] },
+        ]}
       >
-        <TouchableOpacity>
-          <Text style={styles.listItemTitle}>Delete</Text>
+        <TouchableOpacity activeOpacity={0.6}>
+          <Ionicons name="trash-outline" size={32} color="white" />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -116,6 +127,8 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: 'red',
     marginRight: 16,
+    padding: 8,
+    borderRadius: 32,
   },
 })
 
