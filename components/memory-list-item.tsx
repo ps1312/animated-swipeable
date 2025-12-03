@@ -25,7 +25,9 @@ const MemoryListItem = ({ item }: MemoryListItemProps) => {
 
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (_, gestureState) => {
+        return Math.abs(gestureState.dx) > Math.abs(gestureState.dy)
+      },
       onPanResponderGrant: () => {
         setIsAnimating(true)
       },
