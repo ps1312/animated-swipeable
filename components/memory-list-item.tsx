@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Dimensions,
@@ -12,13 +12,18 @@ import { Memory } from '../memories'
 
 interface MemoryListItemProps {
   item: Memory
+  setIsSwiping: (state: boolean) => void
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 const SNAP_THRESHOLD = -(SCREEN_WIDTH * 0.3)
 
-const MemoryListItem = ({ item }: MemoryListItemProps) => {
+const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
+
+  useEffect(() => {
+    setIsSwiping(isAnimating)
+  }, [isAnimating])
 
   const translateX = useAnimatedValue(0)
   const lastDistance = useRef(0)
