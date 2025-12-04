@@ -8,7 +8,7 @@
   },
   {
     "id": 2,
-    "activity": "Had coffee with a friend",
+    "activity": "Had a wonderful coffee catch-up session with my old college friend at our favorite downtown café",
     "emotion": "happy",
     "reaction": "It was so nice catching up after so long.",
     "createdAt": "2024-03-14T14:20:00.000Z"
@@ -22,7 +22,7 @@
   },
   {
     "id": 4,
-    "activity": "Watched a movie alone",
+    "activity": "Watched a critically acclaimed foreign film alone at home with homemade popcorn and cozy blankets",
     "emotion": "relaxed",
     "reaction": "Needed this downtime to unwind.",
     "createdAt": "2024-03-12T21:00:00.000Z"
@@ -43,7 +43,7 @@
   },
   {
     "id": 7,
-    "activity": "Attended a yoga class",
+    "activity": "Attended an invigorating sunrise yoga class at the new studio that just opened in my neighborhood",
     "emotion": "refreshed",
     "reaction": "My body feels stretched and my mind is clear.",
     "createdAt": "2024-03-17T07:00:00.000Z"
@@ -57,7 +57,7 @@
   },
   {
     "id": 9,
-    "activity": "Went grocery shopping",
+    "activity": "Went grocery shopping for the entire week, carefully planning meals and stocking up on healthy ingredients",
     "emotion": "accomplished",
     "reaction": "Stocked up for the week. Feeling organized!",
     "createdAt": "2024-03-18T11:20:00.000Z"

@@ -84,13 +84,14 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
           },
         ]}
       >
-        <View style={{ flex: 1 }}>
-          <Text style={styles.listItemTitle}>{item.emotion}</Text>
+        <View style={styles.listItemTitle}>
+          <Text style={styles.listItemTitleText}>{item.emotion}</Text>
           <Text style={styles.listItemDate}>
             {item.createdAt.toDateString()}
           </Text>
-          <Text style={styles.listItemSubtitle}>{item.activity}</Text>
         </View>
+
+        <Text style={styles.listItemSubtitle}>{item.activity}</Text>
       </Animated.View>
 
       <Animated.View
@@ -100,7 +101,7 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
         ]}
       >
         <TouchableOpacity activeOpacity={0.6}>
-          <Ionicons name="trash-outline" size={32} color="white" />
+          <Ionicons name="trash-outline" size={28} color="white" />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -108,19 +109,26 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
 }
 
 const styles = StyleSheet.create({
-  container: { marginBottom: 8, justifyContent: 'center' },
+  container: {
+    marginBottom: 8,
+    justifyContent: 'center',
+  },
   listItem: {
-    height: 90,
     padding: 16,
-    width: '100%',
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#d0d0d0',
     zIndex: 1,
   },
-  listItemTitle: { color: 'white', fontSize: 20, fontWeight: 'bold' },
+  listItemTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  listItemTitleText: { color: 'white', fontSize: 20, fontWeight: 'bold' },
   listItemSubtitle: { color: 'lightgray', fontSize: 16 },
-  listItemDate: { color: 'lightgray', fontSize: 14, alignSelf: 'flex-end' },
+  listItemDate: { color: 'lightgray', fontSize: 14 },
   deleteContainer: {
     justifyContent: 'center',
     position: 'absolute',
