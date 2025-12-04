@@ -4,10 +4,15 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 import { useState } from 'react'
 import MemoryListItem from './components/memory-list-item'
-import memories from './memories'
+import data from './memories'
 
 const App = () => {
+  const [memories, setMemories] = useState(data)
   const [isSwiping, setIsSwiping] = useState(false)
+
+  const handleDelete = (id: number) => {
+    setMemories(memories.filter((m) => m.id !== id))
+  }
 
   return (
     <SafeAreaProvider>
@@ -18,7 +23,11 @@ const App = () => {
           scrollEnabled={!isSwiping}
           data={memories}
           renderItem={({ item }) => (
-            <MemoryListItem item={item} setIsSwiping={setIsSwiping} />
+            <MemoryListItem
+              item={item}
+              setIsSwiping={setIsSwiping}
+              onDelete={handleDelete}
+            />
           )}
           contentContainerStyle={{ marginHorizontal: 16 }}
         />

@@ -1,6 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { useEffect, useRef, useState } from 'react'
 import {
+  Alert,
   Animated,
   Dimensions,
   PanResponder,
@@ -16,12 +17,17 @@ import { Memory } from '../memories'
 interface MemoryListItemProps {
   item: Memory
   setIsSwiping: (state: boolean) => void
+  onDelete: (id: number) => void
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 const SNAP_THRESHOLD = -(SCREEN_WIDTH * 0.3)
 
-const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
+const MemoryListItem = ({
+  item,
+  setIsSwiping,
+  onDelete,
+}: MemoryListItemProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
@@ -72,6 +78,13 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
     extrapolate: 'clamp',
   })
 
+  const handleDelete = () => {
+    Alert.alert('Delete memory', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', onPress: () => onDelete(item.id) },
+    ])
+  }
+
   return (
     <View style={styles.container}>
       <Animated.View
@@ -100,7 +113,11 @@ const MemoryListItem = ({ item, setIsSwiping }: MemoryListItemProps) => {
           { opacity: deleteOpacity, transform: [{ scale: deleteScale }] },
         ]}
       >
-        <TouchableOpacity activeOpacity={0.6}>
+        <TouchableOpacity
+          activeOpacity={0.6}
+          onPress={handleDelete}
+          style={styles.deleteButton}
+        >
           <Ionicons name="trash-outline" size={28} color="white" />
         </TouchableOpacity>
       </Animated.View>
@@ -133,11 +150,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: 0,
-    backgroundColor: 'red',
     marginRight: 16,
-    padding: 8,
-    borderRadius: 32,
   },
+  deleteButton: { backgroundColor: 'red', padding: 8, borderRadius: 32 },
 })
 
 export default MemoryListItem
