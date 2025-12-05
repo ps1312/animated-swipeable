@@ -4,6 +4,7 @@ import {
   Alert,
   Animated,
   Dimensions,
+  LayoutChangeEvent,
   PanResponder,
   StyleSheet,
   Text,
@@ -34,6 +35,7 @@ const MemoryListItem = ({
   onDelete,
 }: MemoryListItemProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
+  const [hasCalcHeight, setHasCalcHeight] = useState(false)
 
   useEffect(() => {
     setIsSwiping(isAnimating)
@@ -41,6 +43,7 @@ const MemoryListItem = ({
 
   const translateX = useAnimatedValue(0)
   const deleteWidthAnim = useAnimatedValue(DELETE_BUTTON_WIDTH)
+  const heightAnim = useAnimatedValue(0)
   const lastPosition = useRef(0)
 
   const animTranslateX = (position: number) => {
@@ -97,15 +100,41 @@ const MemoryListItem = ({
     })
   ).current
 
+  const handleLayout = (event: LayoutChangeEvent) => {
+    const { height } = event.nativeEvent.layout
+
+    if (!hasCalcHeight) {
+      heightAnim.setValue(height)
+      setHasCalcHeight(true)
+    }
+  }
+
   const onCancelDelete = () => {
     animDeleteWidth(DELETE_BUTTON_WIDTH)
     animTranslateX(0)
   }
 
+  const onConfirmDelete = () => {
+    Animated.parallel([
+      Animated.timing(heightAnim, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: false,
+      }),
+      Animated.timing(deleteWidthAnim, {
+        toValue: DELETE_BUTTON_WIDTH,
+        useNativeDriver: false,
+        duration: 150,
+      }),
+    ]).start((finished) => {
+      if (finished) onDelete(item.id)
+    })
+  }
+
   const handleDelete = () => {
     Alert.alert('Delete memory', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel', onPress: onCancelDelete },
-      { text: 'Delete', onPress: () => onDelete(item.id) },
+      { text: 'Delete', onPress: onConfirmDelete },
     ])
   }
 
@@ -122,7 +151,13 @@ const MemoryListItem = ({
   })
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      onLayout={handleLayout}
+      style={[
+        styles.container,
+        { height: hasCalcHeight ? heightAnim : undefined },
+      ]}
+    >
       <Animated.View
         {...panResponder.panHandlers}
         style={[
@@ -150,6 +185,7 @@ const MemoryListItem = ({
             opacity: deleteOpacity,
             transform: [{ scale: deleteScale }],
             width: deleteWidthAnim,
+            height: heightAnim,
           },
         ]}
       >
@@ -165,7 +201,7 @@ const MemoryListItem = ({
           />
         </TouchableOpacity>
       </Animated.View>
-    </View>
+    </Animated.View>
   )
 }
 
