@@ -11,7 +11,7 @@ const App = () => {
   const [isSwiping, setIsSwiping] = useState(false)
 
   const handleDelete = (id: number) => {
-    setMemories(memories.filter((m) => m.id !== id))
+    setMemories((prevMemories) => prevMemories.filter((m) => m.id !== id))
   }
 
   return (
