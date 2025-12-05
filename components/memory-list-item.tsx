@@ -21,7 +21,8 @@ interface MemoryListItemProps {
 }
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
-const SNAP_THRESHOLD = -(SCREEN_WIDTH * 0.3)
+const SNAP_OPEN = -(SCREEN_WIDTH * 0.3) // Show delete button
+const SNAP_DELETE = -(SCREEN_WIDTH * 0.65) // Show delete button
 
 const MemoryListItem = ({
   item,
@@ -35,7 +36,16 @@ const MemoryListItem = ({
   }, [isAnimating])
 
   const translateX = useAnimatedValue(0)
-  const lastDistance = useRef(0)
+  const lastPosition = useRef(0)
+
+  const animateTo = (position: number) => {
+    Animated.spring(translateX, {
+      toValue: position,
+      useNativeDriver: true,
+      bounciness: 0,
+    }).start()
+    lastPosition.current = position
+  }
 
   const panResponder = useRef(
     PanResponder.create({
@@ -46,44 +56,47 @@ const MemoryListItem = ({
         setIsAnimating(true)
       },
       onPanResponderMove: (_, gestureState) => {
-        const totalDistance = gestureState.dx + lastDistance.current
+        const totalDistance = gestureState.dx + lastPosition.current
         translateX.setValue(totalDistance)
       },
       onPanResponderRelease: (_, gestureState) => {
         setIsAnimating(false)
+        const totalDistance = gestureState.dx + lastPosition.current
 
-        const totalDistance = gestureState.dx + lastDistance.current
-        const endPosition = totalDistance > SNAP_THRESHOLD ? 0 : SNAP_THRESHOLD
-        lastDistance.current = endPosition
+        let endPosition
+        if (totalDistance < SNAP_DELETE) {
+          endPosition = -SCREEN_WIDTH
+          handleDelete()
+        } else if (totalDistance < SNAP_OPEN) {
+          endPosition = SNAP_OPEN
+        } else {
+          endPosition = 0
+        }
 
-        Animated.spring(translateX, {
-          toValue: endPosition,
-          useNativeDriver: true,
-          bounciness: 0,
-        }).start()
+        animateTo(endPosition)
       },
       onPanResponderTerminationRequest: () => false,
     })
   ).current
 
+  const handleDelete = () => {
+    Alert.alert('Delete memory', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel', onPress: () => animateTo(0) },
+      { text: 'Delete', onPress: () => onDelete(item.id) },
+    ])
+  }
+
   const deleteOpacity = translateX.interpolate({
-    inputRange: [SNAP_THRESHOLD, 0],
+    inputRange: [SNAP_OPEN, 0],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   })
 
   const deleteScale = translateX.interpolate({
-    inputRange: [SNAP_THRESHOLD, 0],
+    inputRange: [SNAP_OPEN, 0],
     outputRange: [1, 0.3],
     extrapolate: 'clamp',
   })
-
-  const handleDelete = () => {
-    Alert.alert('Delete memory', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', onPress: () => onDelete(item.id) },
-    ])
-  }
 
   return (
     <View style={styles.container}>
