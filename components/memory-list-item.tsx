@@ -20,9 +20,13 @@ interface MemoryListItemProps {
   onDelete: (id: number) => void
 }
 
+// animation constraints
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 const SNAP_OPEN = -(SCREEN_WIDTH * 0.3) // Show delete button
 const SNAP_DELETE = -(SCREEN_WIDTH * 0.65) // Show delete button
+const DELETE_ICON_SIZE = 28
+const DELETE_BUTTON_PADDING = 8
+const DELETE_BUTTON_WIDTH = DELETE_ICON_SIZE + DELETE_BUTTON_PADDING * 2
 
 const MemoryListItem = ({
   item,
@@ -36,16 +40,24 @@ const MemoryListItem = ({
   }, [isAnimating])
 
   const translateX = useAnimatedValue(0)
+  const deleteWidthAnim = useAnimatedValue(DELETE_BUTTON_WIDTH)
   const lastPosition = useRef(0)
 
-  const animateTo = (position: number) => {
+  const animTranslateX = (position: number) => {
     Animated.spring(translateX, {
       toValue: position,
-      useNativeDriver: true,
+      useNativeDriver: false,
       bounciness: 0,
     }).start()
     lastPosition.current = position
   }
+
+  const animDeleteWidth = (position: number) =>
+    Animated.spring(deleteWidthAnim, {
+      toValue: position,
+      useNativeDriver: false,
+      bounciness: 0,
+    }).start()
 
   const panResponder = useRef(
     PanResponder.create({
@@ -58,6 +70,12 @@ const MemoryListItem = ({
       onPanResponderMove: (_, gestureState) => {
         const totalDistance = gestureState.dx + lastPosition.current
         translateX.setValue(totalDistance)
+
+        if (totalDistance < SNAP_DELETE) {
+          animDeleteWidth(-SNAP_DELETE)
+        } else {
+          animDeleteWidth(DELETE_BUTTON_WIDTH)
+        }
       },
       onPanResponderRelease: (_, gestureState) => {
         setIsAnimating(false)
@@ -73,15 +91,20 @@ const MemoryListItem = ({
           endPosition = 0
         }
 
-        animateTo(endPosition)
+        animTranslateX(endPosition)
       },
       onPanResponderTerminationRequest: () => false,
     })
   ).current
 
+  const onCancelDelete = () => {
+    animDeleteWidth(DELETE_BUTTON_WIDTH)
+    animTranslateX(0)
+  }
+
   const handleDelete = () => {
     Alert.alert('Delete memory', 'Are you sure?', [
-      { text: 'Cancel', style: 'cancel', onPress: () => animateTo(0) },
+      { text: 'Cancel', style: 'cancel', onPress: onCancelDelete },
       { text: 'Delete', onPress: () => onDelete(item.id) },
     ])
   }
@@ -123,7 +146,11 @@ const MemoryListItem = ({
       <Animated.View
         style={[
           styles.deleteContainer,
-          { opacity: deleteOpacity, transform: [{ scale: deleteScale }] },
+          {
+            opacity: deleteOpacity,
+            transform: [{ scale: deleteScale }],
+            width: deleteWidthAnim,
+          },
         ]}
       >
         <TouchableOpacity
@@ -131,7 +158,11 @@ const MemoryListItem = ({
           onPress={handleDelete}
           style={styles.deleteButton}
         >
-          <Ionicons name="trash-outline" size={28} color="white" />
+          <Ionicons
+            name="trash-outline"
+            size={DELETE_ICON_SIZE}
+            color="white"
+          />
         </TouchableOpacity>
       </Animated.View>
     </View>
@@ -165,7 +196,12 @@ const styles = StyleSheet.create({
     right: 0,
     marginRight: 16,
   },
-  deleteButton: { backgroundColor: 'red', padding: 8, borderRadius: 32 },
+  deleteButton: {
+    alignItems: 'center',
+    backgroundColor: 'red',
+    padding: DELETE_BUTTON_PADDING,
+    borderRadius: 32,
+  },
 })
 
 export default MemoryListItem
