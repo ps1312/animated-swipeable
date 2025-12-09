@@ -4,6 +4,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 import { useState } from 'react'
 import MemoryListItem from './components/memory-list-item'
+import NuclearStressTest from './components/nuclear-stress-test'
 import data from './memories'
 
 const App = () => {
@@ -19,18 +20,20 @@ const App = () => {
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
 
-        <FlatList
-          scrollEnabled={!isSwiping}
-          data={memories}
-          renderItem={({ item }) => (
-            <MemoryListItem
-              item={item}
-              setIsSwiping={setIsSwiping}
-              onDelete={handleDelete}
-            />
-          )}
-          contentContainerStyle={{ marginHorizontal: 16 }}
-        />
+        <NuclearStressTest>
+          <FlatList
+            scrollEnabled={!isSwiping}
+            data={memories}
+            renderItem={({ item }) => (
+              <MemoryListItem
+                item={item}
+                setIsSwiping={setIsSwiping}
+                onDelete={handleDelete}
+              />
+            )}
+            contentContainerStyle={{ marginHorizontal: 16 }}
+          />
+        </NuclearStressTest>
       </SafeAreaView>
     </SafeAreaProvider>
   )
