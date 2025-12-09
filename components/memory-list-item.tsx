@@ -1,4 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
+import * as Haptics from 'expo-haptics'
 import { useEffect, useRef, useState } from 'react'
 import {
   Alert,
@@ -24,7 +25,7 @@ interface MemoryListItemProps {
 // animation constraints
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
 const SNAP_OPEN = -(SCREEN_WIDTH * 0.3) // Show delete button
-const SNAP_DELETE = -(SCREEN_WIDTH * 0.65) // Show delete button
+const SNAP_DELETE = -(SCREEN_WIDTH * 0.65) // Trigger delete action
 const DELETE_ICON_SIZE = 28
 const DELETE_BUTTON_PADDING = 8
 const DELETE_BUTTON_WIDTH = DELETE_ICON_SIZE + DELETE_BUTTON_PADDING * 2
@@ -45,6 +46,7 @@ const MemoryListItem = ({
   const deleteWidthAnim = useAnimatedValue(DELETE_BUTTON_WIDTH)
   const heightAnim = useAnimatedValue(0)
   const lastPosition = useRef(0)
+  const hasTriggeredHaptic = useRef(false)
 
   const animTranslateX = (position: number) => {
     Animated.spring(translateX, {
@@ -74,10 +76,13 @@ const MemoryListItem = ({
         const totalDistance = gestureState.dx + lastPosition.current
         translateX.setValue(totalDistance)
 
-        if (totalDistance < SNAP_DELETE) {
-          animDeleteWidth(-SNAP_DELETE)
-        } else {
+        if (totalDistance < SNAP_DELETE && !hasTriggeredHaptic.current) {
+          animDeleteWidth(SCREEN_WIDTH - DELETE_BUTTON_WIDTH - 20)
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+          hasTriggeredHaptic.current = true
+        } else if (totalDistance > SNAP_DELETE) {
           animDeleteWidth(DELETE_BUTTON_WIDTH)
+          hasTriggeredHaptic.current = false
         }
       },
       onPanResponderRelease: (_, gestureState) => {
