@@ -120,18 +120,11 @@ const MemoryListItem = ({
   }
 
   const onConfirmDelete = () => {
-    Animated.parallel([
-      Animated.timing(heightAnim, {
-        toValue: 0,
-        duration: 150,
-        useNativeDriver: false,
-      }),
-      Animated.timing(deleteWidthAnim, {
-        toValue: DELETE_BUTTON_WIDTH,
-        useNativeDriver: false,
-        duration: 150,
-      }),
-    ]).start((finished) => {
+    Animated.timing(heightAnim, {
+      toValue: 0,
+      duration: 100,
+      useNativeDriver: false,
+    }).start((finished) => {
       if (finished) onDelete(item.id)
     })
   }
