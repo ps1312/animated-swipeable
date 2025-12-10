@@ -24,7 +24,7 @@ interface MemoryListItemProps {
 
 // animation constraints
 const { width: SCREEN_WIDTH } = Dimensions.get('window')
-const SNAP_OPEN = -(SCREEN_WIDTH * 0.3) // Show delete button
+const SNAP_OPEN = -(SCREEN_WIDTH * 0.25) // Show delete button
 const SNAP_DELETE = -(SCREEN_WIDTH * 0.65) // Trigger delete action
 const DELETE_ICON_SIZE = 28
 const DELETE_BUTTON_PADDING = 8
@@ -204,16 +204,12 @@ const MemoryListItem = ({
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 8,
-    justifyContent: 'center',
-  },
+  container: { justifyContent: 'center' },
   listItem: {
-    padding: 16,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#d0d0d0',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     zIndex: 1,
+    borderRadius: 16,
   },
   listItemTitle: {
     flexDirection: 'row',
