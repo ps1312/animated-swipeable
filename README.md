@@ -29,21 +29,26 @@ Other than that I've found out that the `Animated API` has nice features: spring
 
 <table>
   <tr>
-    <td align="center">Delete</td>
+    <td align="center">Partial</td>
+    <td align="center">Full</td>
     <td align="center">Cancel</td>
     <td align="center">Nuclear Stress Test</td>
   </tr>
   <tr>
     <td>
-      <video src="https://github.com/user-attachments/assets/09b0d9b9-b0aa-45b7-99d1-c8d2678bb54d" controls width="300">
+      <video src="https://github.com/user-attachments/assets/6080373d-e96f-4b1b-aa87-ee972acbf79a" controls width="300">
       </video>
     </td>
     <td>
-      <video src="https://github.com/user-attachments/assets/dfec9b38-d5b2-4b65-b72a-2420a9942352" controls width="300">
+      <video src="https://github.com/user-attachments/assets/fc212bb5-76b0-43dd-b877-3610c1345c03" controls width="300">
       </video>
     </td>
     <td>
-      <video src="https://github.com/user-attachments/assets/52b806ec-c506-4448-aa27-461d19e1c355" controls width="300">
+      <video src="https://github.com/user-attachments/assets/3a9760b9-f4df-475c-bd62-db4d9fd13bc4" controls width="300">
+      </video>
+    </td>
+    <td>
+      <video src="https://github.com/user-attachments/assets/04bc0c78-cc7a-4fad-9932-087333a0971d" controls width="300">
       </video>
     </td>
   </tr>
