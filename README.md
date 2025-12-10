@@ -6,7 +6,26 @@ Well, they indeed exist, one that stands out is that `useNativeDriver` (which al
 
 Other than that I've found out that the `Animated API` has nice features: spring animations, interpolation, running animations in parallel, sequence... It can be a good API for simple tasks. Responding to gestures with `PanResponder` is also good, and it's really straightforward. With `PanResponder` I was able to program the component swipe behaviors without problems.
 
-### Videos
+#### Topics explored
+- Gesture-driven animations
+- Layout measurement
+- Swipe interactions
+- UX inspired by real apps
+- Stress tests to verify animation smoothness
+
+#### What it does?
+- Creates an iOS-mail style swipe-to-delete component
+- Moves the list item to the left on the X axis based on pan gestures
+- Highlights the component while the swipe is in progress
+- Snaps the component in multiple positions when touch stops
+- Shows the delete button on partial swipe or trigger the action with a full swipe
+- Handles horizontal and vertical gestures correctly so the FlatList doesn't move while the swipe is in progress
+- Animates the delete icon with a nice fade and scale using interpolation
+- Animates the icon width when swipe is full
+- Animates the item height before deleting, giving a nice polished effect instead of just "removing" the component in one frame
+- Triggers a soft vibration feedback when swipe is full
+
+#### Videos
 
 <table>
   <tr>
@@ -30,11 +49,11 @@ Other than that I've found out that the `Animated API` has nice features: spring
   </tr>
 </table>
 
-### Next steps
+#### Next steps
 
 The next project is to replicate this exact behavior using `Reanimated` and `React Native Gesture Handler`. This will result in a good comparison about both performance and available API's. The objective is to see 60fps animations without stuttering or freezing, even in the Nuclear Stress Test ✅.
 
-### References:
+#### References:
 
 - https://reactnative.dev/docs/animated
 - https://reactnative.dev/docs/panresponder
