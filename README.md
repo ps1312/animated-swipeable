@@ -2,9 +2,9 @@
 
 This project was created with the objective to practice animations and explore more about React Native's built in `Animated API`, specially on what "limitations" justifies going directly in favor of `Reanimated`.
 
-Well, they indeed exist, one that stands out is that `useNativeDriver` (which allows the animations to run on the native UI thread) does not support animating the component's height or width. This is a big concern if you want to display **smooth, 60fps** animations because without this config all the animations code have to pass through the bridge, on every frame, and if the JS thread gets busy, the animation can freeze (see video below).
+Well, they indeed exist, one that stands out is that `useNativeDriver` (which allows the animations to run on the native UI thread) does not support animating the component's height or width. This is a big concern if you want to display **smooth, 60fps** animations because without this config all the animations code have to pass through the bridge, on every frame, and if the JS thread gets busy, the animation can freeze (see video below). Other than that I've found out that the `Animated API` has nice features: spring animations, interpolation, running animations in parallel, sequence. It can be a good API for simple tasks.
 
-Other than that I've found out that the `Animated API` has nice features: spring animations, interpolation, running animations in parallel, sequence... It can be a good API for simple tasks. Responding to gestures with `PanResponder` is also good, and it's really straightforward. With `PanResponder` I was able to program the component swipe behaviors without problems.
+Responding to gestures with `PanResponder` is also really straightforward. I was able to program the component swipe behaviors without problems. The thing is that PanResponder communicates through the bridge, the API is not native, so the experience won't be good when the JS thread is under heavy load. The swipe gesture will stutter. In other words: the component won't follow your finger in real-time.
 
 #### Topics explored
 - Gesture-driven animations
