@@ -132,7 +132,7 @@ const MemoryListItem = ({
   const handleDelete = () => {
     Alert.alert('Delete memory', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel', onPress: onCancelDelete },
-      { text: 'Delete', onPress: onConfirmDelete },
+      { text: 'Delete', onPress: onConfirmDelete, style: 'destructive' },
     ])
   }
 
